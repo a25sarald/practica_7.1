@@ -1,0 +1,26 @@
+name: CI/CD pipeline con Docker
+
+on: #
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs: #
+  build-and-test:
+    runs-on: ubuntu-latest #
+
+    container:
+      image: node:lts-slim
+
+    steps: #
+      - name: Checkout repository #
+        uses: actions/checkout@v6 #
+
+      # npm ci é máis estrito que npm install, pois instala exactamente as dependencias indicadas en package-lock.json
+      - name: Run npm #
+        run: npm ci
+
+      - name: Run tests
+        run: npm test

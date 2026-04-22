@@ -1,4 +1,4 @@
-name: CI/CD pipeline con Docker
+name: CI/CD pipeline
 
 on: #
   push:
@@ -10,17 +10,24 @@ on: #
 jobs: #
   build-and-test:
     runs-on: ubuntu-latest #
-
-    container:
-      image: node:lts-slim
-
     steps: #
       - name: Checkout repository #
         uses: actions/checkout@v6 #
 
-      # npm ci é máis estrito que npm install, pois instala exactamente as dependencias indicadas en package-lock.json
-      - name: Run npm #
+      - name: Use Node.js
+        uses: actions/setup-node@v6 #
+        with:
+          node-version: 24
+      - name: Run npm ci#
         run: npm ci
 
       - name: Run tests
         run: npm test
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest #
+    if: success()
+    steps:
+      - name: Despregamento en produción #
+        run: echo "Despregando a aplicación..."

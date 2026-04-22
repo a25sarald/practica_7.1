@@ -8,8 +8,6 @@ COPY package.json package-lock.json ./
 
 RUN npm ci
 
-RUN npm install
-
 # Bundle app source
 COPY . .
 
